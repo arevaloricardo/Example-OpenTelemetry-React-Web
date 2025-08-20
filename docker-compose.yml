@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # Aplicación React Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Backend API (opcional - descomenta si tienes el backend)
+  # backend:
+  #   image: tu-backend-image:latest
+  #   ports:
+  #     - "5000:5000"
+  #   environment:
+  #     - NODE_ENV=production
+  #     - DATABASE_URL=your-database-url
+  #   restart: unless-stopped
+  #   networks:
+  #     - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+# Volúmenes para persistencia (si necesitas)
+# volumes:
+#   db_data:
