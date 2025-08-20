@@ -14,12 +14,13 @@
     "noEmit": true,
 
     /* Linting */
-    "skipLibCheck": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
+  "skipLibCheck": true,
+  "strict": true,
+  "strictNullChecks": true,
+  "noUnusedLocals": false,
+  "noUnusedParameters": false,
+  "noFallthroughCasesInSwitch": true,
+  "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],

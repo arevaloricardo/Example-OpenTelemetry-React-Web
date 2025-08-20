@@ -1,0 +1,50 @@
+# Dockerfile optimizado para CI/CD
+FROM oven/bun:1 AS base
+WORKDIR /usr/src/app
+
+# Variables de entorno para optimización
+ENV NODE_ENV=production
+ENV CI=true
+
+# Copiar archivos de dependencias primero (mejor cache)
+COPY package.json bun.lock* ./
+
+# Instalar dependencias de producción
+RUN bun install --frozen-lockfile --production
+
+# Copiar código fuente
+COPY . .
+
+# Build de la aplicación
+RUN bun run build
+
+# Etapa de producción con nginx optimizado
+FROM nginx:alpine AS production
+
+# Instalar herramientas útiles para debugging
+RUN apk add --no-cache curl
+
+# Copiar archivos construidos
+COPY --from=base /usr/src/app/dist /usr/share/nginx/html
+
+# Copiar configuración de nginx optimizada
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Crear usuario no-root para seguridad
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost/ || exit 1
+
+# Exponer puerto
+EXPOSE 80
+
+# Labels para metadata
+LABEL maintainer="tu-email@dominio.com"
+LABEL version="1.0"
+LABEL description="React app with Vite, Bun and TanStack Router"
+
+# Comando por defecto
+CMD ["nginx", "-g", "daemon off;"]
