@@ -4,20 +4,14 @@ WORKDIR /usr/src/app
 
 # Instalar dependencias
 FROM base AS install
-RUN mkdir -p /temp/dev
-COPY package.json ./
-COPY bun.lock* ./
-RUN cp package.json /temp/dev/ && cp bun.lock* /temp/dev/ 2>/dev/null || true
-RUN cd /temp/dev && bun install --frozen-lockfile
-
-# Instalar solo dependencias de producción
-RUN mkdir -p /temp/prod
-RUN cp package.json /temp/prod/ && cp bun.lock* /temp/prod/ 2>/dev/null || true
-RUN cd /temp/prod && bun install --frozen-lockfile --production
+# Copiar archivos de dependencias
+COPY package.json bun.lock ./
+# Instalar todas las dependencias
+RUN bun install --frozen-lockfile
 
 # Build de la aplicación
 FROM base AS build
-COPY --from=install /temp/dev/node_modules node_modules
+COPY --from=install /usr/src/app/node_modules node_modules
 COPY . .
 
 # Variables de entorno para el build
