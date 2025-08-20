@@ -1,0 +1,22 @@
+# Docker Compose específico para Dokploy
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+      - VITE_BASE_URL=${VITE_BASE_URL:-https://web-a.test.alineadoos.com}
+    restart: unless-stopped
+    # Sin puertos específicos - Dokploy maneja el mapeo
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`web-a.test.alineadoos.com`)"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+    networks:
+      - dokploy
+
+networks:
+  dokploy:
+    external: true
