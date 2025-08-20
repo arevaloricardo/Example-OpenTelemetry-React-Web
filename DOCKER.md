@@ -26,7 +26,7 @@ bun run docker:build
 bun run docker:run
 ```
 
-**Acceder a:** http://localhost:3000
+**Acceder a:** http://localhost:5290
 
 ---
 
@@ -50,7 +50,7 @@ bun run docker:build-dev
 bun run docker:run-dev
 ```
 
-**Acceder a:** http://localhost:5173
+**Acceder a:** http://localhost:5291
 
 ---
 
@@ -154,7 +154,7 @@ backend:
 ```bash
 # Cambiar puerto en docker-compose.yml
 ports:
-  - "3001:80"  # Cambiar 3000 por 3001
+  - "5292:80"  # Cambiar 5290 por 5292
 ```
 
 ### **Problemas con volúmenes en Windows**
