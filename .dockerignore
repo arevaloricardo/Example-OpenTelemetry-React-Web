@@ -1,30 +1,18 @@
-# Dependencies
 node_modules
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Build outputs
-dist
-build
-
-# Environment variables
+.git
+.gitignore
+README.md
 .env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
-
-# IDE
+dist
+build
 .vscode
 .idea
-
-# OS
+*.swp
+*.swo
 .DS_Store
 Thumbs.db
-
-# Logs
-*.log
-
-# Runtime
-.cache

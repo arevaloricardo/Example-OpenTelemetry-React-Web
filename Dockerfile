@@ -1,35 +1,40 @@
-# Dockerfile para aplicación React con Vite y Bun
-FROM oven/bun:1 AS base
-WORKDIR /usr/src/app
+# Multi-stage build para aplicación React con Vite
+FROM node:18-alpine AS builder
+
+# Establecer directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos de dependencias
+COPY package.json bun.lock* ./
 
 # Instalar dependencias
-FROM base AS install
-RUN mkdir -p /temp/dev
-COPY package.json bun.lockb /temp/dev/
-RUN cd /temp/dev && bun install --frozen-lockfile
+RUN npm ci --only=production
 
-# Instalar solo dependencias de producción
-RUN mkdir -p /temp/prod
-COPY package.json bun.lockb /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
-
-# Build de la aplicación
-FROM base AS build
-COPY --from=install /temp/dev/node_modules node_modules
+# Copiar código fuente
 COPY . .
 
-# Variables de entorno para el build
-ENV NODE_ENV=production
-
 # Build de la aplicación
-RUN bun run build
+RUN npm run build
 
-# Servir con nginx
-FROM nginx:alpine AS release
-COPY --from=build /usr/src/app/dist /usr/share/nginx/html
+# Imagen final con nginx
+FROM nginx:alpine
 
-# Configuración de nginx para SPA
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copiar archivos construidos
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Configuración básica de nginx para SPA
+RUN echo 'server { \
+    listen 80; \
+    location / { \
+        root /usr/share/nginx/html; \
+        index index.html index.htm; \
+        try_files $uri $uri/ /index.html; \
+    } \
+    location /health { \
+        return 200 "OK"; \
+        add_header Content-Type text/plain; \
+    } \
+}' > /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

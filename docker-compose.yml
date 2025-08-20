@@ -1,35 +1,31 @@
 version: '3.8'
 
 services:
-  # Aplicación React Frontend
-  frontend:
+  web:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5175:80"
+      - "3000:80"
     environment:
-      - NODE_ENV=production
+      - VITE_BASE_URL=${VITE_BASE_URL}
+      - VITE_WEB_URL=${VITE_WEB_URL}
+      - NODE_ENV=${NODE_ENV:-production}
     restart: unless-stopped
-    networks:
-      - app-network
+    
+    # Health check para verificar que la aplicación está funcionando
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 
-  # Backend API (opcional - descomenta si tienes el backend)
-  # backend:
-  #   image: tu-backend-image:latest
+  # Opcional: Si quieres simular también el API localmente
+  # api:
+  #   image: tu-api-image:latest
   #   ports:
-  #     - "5000:5000"
+  #     - "8080:8080"
   #   environment:
   #     - NODE_ENV=production
-  #     - DATABASE_URL=your-database-url
   #   restart: unless-stopped
-  #   networks:
-  #     - app-network
-
-networks:
-  app-network:
-    driver: bridge
-
-# Volúmenes para persistencia (si necesitas)
-# volumes:
-#   db_data:

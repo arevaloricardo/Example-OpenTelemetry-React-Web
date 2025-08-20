@@ -1,5 +1,5 @@
 {
-  "name": ".",
+  "name": "demo-opentelemetry-web",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,10 +8,10 @@
     "build": "vite build && tsc",
     "serve": "vite preview",
     "test": "vitest run",
-    "docker:build": "docker build -t react-tanstack-app .",
-    "docker:build-dev": "docker build -f Dockerfile.dev -t react-tanstack-app:dev .",
-    "docker:run": "docker run -p 3000:80 react-tanstack-app",
-    "docker:run-dev": "docker run -p 5173:5173 -v .:/usr/src/app react-tanstack-app:dev",
+    "docker:build": "docker build -t demo-opentelemetry-web .",
+    "docker:run": "docker run -p 3000:80 -e VITE_BASE_URL=https://web-a.test.alineadoos.com:8080 demo-opentelemetry-web",
+    "docker:run-local": "docker run -p 3000:80 -e VITE_BASE_URL=http://localhost:8080 demo-opentelemetry-web",
+    "docker:test": "docker run --rm -p 3000:80 -e VITE_BASE_URL=https://web-a.test.alineadoos.com:8080 demo-opentelemetry-web",
     "docker:compose": "docker-compose up --build",
     "docker:compose-dev": "docker-compose -f docker-compose.dev.yml up --build",
     "docker:compose-down": "docker-compose down",
