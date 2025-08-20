@@ -2,7 +2,7 @@ import { environment } from '../../environment';
 import type { LoginInputModel, LoginOutputModel } from '../types/auth';
 
 export async function loginUser(credentials: LoginInputModel): Promise<LoginOutputModel> {
-  const response = await fetch(`${environment.BASE_URL}/api/auth/login`, {
+  const response = await fetch(`${environment.API_URL}/api/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

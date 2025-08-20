@@ -5,17 +5,9 @@
   "scripts": {
     "dev": "vite --port 3000",
     "start": "vite --port 3000",
-    "build": "vite build && tsc",
+    "build": "vite build",
     "serve": "vite preview",
-    "test": "vitest run",
-    "docker:build": "docker build -t demo-opentelemetry-web .",
-    "docker:run": "docker run -p 3000:80 -e VITE_BASE_URL=https://web-a.test.alineadoos.com:8080 demo-opentelemetry-web",
-    "docker:run-local": "docker run -p 3000:80 -e VITE_BASE_URL=http://localhost:8080 demo-opentelemetry-web",
-    "docker:test": "docker run --rm -p 3000:80 -e VITE_BASE_URL=https://web-a.test.alineadoos.com:8080 demo-opentelemetry-web",
-    "docker:compose": "docker-compose up --build",
-    "docker:compose-dev": "docker-compose -f docker-compose.dev.yml up --build",
-    "docker:compose-down": "docker-compose down",
-    "docker:compose-down-dev": "docker-compose -f docker-compose.dev.yml down"
+    "test": "vitest run"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

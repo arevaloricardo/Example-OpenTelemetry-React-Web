@@ -10,7 +10,7 @@ const getAuthHeaders = () => {
 };
 
 export async function getTasks(): Promise<TaskModel[]> {
-  const response = await fetch(`${environment.BASE_URL}/api/tasks`, {
+  const response = await fetch(`${environment.API_URL}/api/tasks`, {
     method: 'GET',
     headers: getAuthHeaders(),
   });
@@ -23,7 +23,7 @@ export async function getTasks(): Promise<TaskModel[]> {
 }
 
 export async function createTask(task: CreateTaskModel): Promise<void> {
-  const response = await fetch(`${environment.BASE_URL}/api/tasks`, {
+  const response = await fetch(`${environment.API_URL}/api/tasks`, {
     method: 'POST',
     headers: getAuthHeaders(),
     body: JSON.stringify(task),
@@ -35,7 +35,7 @@ export async function createTask(task: CreateTaskModel): Promise<void> {
 }
 
 export async function updateTask(task: UpdateTaskModel): Promise<void> {
-  const response = await fetch(`${environment.BASE_URL}/api/tasks`, {
+  const response = await fetch(`${environment.API_URL}/api/tasks`, {
     method: 'PUT',
     headers: getAuthHeaders(),
     body: JSON.stringify(task),
@@ -47,7 +47,7 @@ export async function updateTask(task: UpdateTaskModel): Promise<void> {
 }
 
 export async function deleteTask(id: number): Promise<void> {
-  const response = await fetch(`${environment.BASE_URL}/api/tasks/${id}`, {
+  const response = await fetch(`${environment.API_URL}/api/tasks/${id}`, {
     method: 'DELETE',
     headers: getAuthHeaders(),
   });
